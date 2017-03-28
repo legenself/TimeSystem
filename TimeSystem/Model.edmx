@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TaskModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Application_t">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Uid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Path" Type="varchar" MaxLength="800" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Log_t">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="TaskUid" Type="uniqueidentifier" />
+          <Property Name="Result" Type="int" Nullable="false" />
+          <Property Name="Message" Type="varchar(max)" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schedule_t">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Uid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Cron" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApplicationUid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Paras" Type="varchar(max)" Nullable="false" />
+          <Property Name="Enable" Type="int" Nullable="false" />
+          <Property Name="LogWhen" Type="int" Nullable="false" />
+          <Property Name="LogPattern" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="LogPath" Type="varchar" MaxLength="800" Nullable="false" />
+          <Property Name="Memo" Type="varchar(max)" />
+        </EntityType>
+        <EntityContainer Name="TaskModelStoreContainer">
+          <EntitySet Name="Application_t" EntityType="Self.Application_t" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log_t" EntityType="Self.Log_t" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedule_t" EntityType="Self.Schedule_t" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TaskModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TaskEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Application_t" EntityType="TaskModel.Application_t" />
+          <EntitySet Name="Log_t" EntityType="TaskModel.Log_t" />
+          <EntitySet Name="Schedule_t" EntityType="TaskModel.Schedule_t" />
+        </EntityContainer>
+        <EntityType Name="Application_t">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Uid" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="800" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Log_t">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="TaskUid" Type="Guid" />
+          <Property Name="Result" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Schedule_t">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Uid" Type="Guid" Nullable="false" />
+          <Property Name="Cron" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationUid" Type="Guid" Nullable="false" />
+          <Property Name="Paras" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Enable" Type="Int32" Nullable="false" />
+          <Property Name="LogWhen" Type="Int32" Nullable="false" />
+          <Property Name="LogPattern" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="LogPath" Type="String" Nullable="false" MaxLength="800" FixedLength="false" Unicode="false" />
+          <Property Name="Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TaskModelStoreContainer" CdmEntityContainer="TaskEntities">
+          <EntitySetMapping Name="Application_t">
+            <EntityTypeMapping TypeName="TaskModel.Application_t">
+              <MappingFragment StoreEntitySet="Application_t">
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Log_t">
+            <EntityTypeMapping TypeName="TaskModel.Log_t">
+              <MappingFragment StoreEntitySet="Log_t">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="TaskUid" ColumnName="TaskUid" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedule_t">
+            <EntityTypeMapping TypeName="TaskModel.Schedule_t">
+              <MappingFragment StoreEntitySet="Schedule_t">
+                <ScalarProperty Name="Memo" ColumnName="Memo" />
+                <ScalarProperty Name="LogPath" ColumnName="LogPath" />
+                <ScalarProperty Name="LogPattern" ColumnName="LogPattern" />
+                <ScalarProperty Name="LogWhen" ColumnName="LogWhen" />
+                <ScalarProperty Name="Enable" ColumnName="Enable" />
+                <ScalarProperty Name="Paras" ColumnName="Paras" />
+                <ScalarProperty Name="ApplicationUid" ColumnName="ApplicationUid" />
+                <ScalarProperty Name="Cron" ColumnName="Cron" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
