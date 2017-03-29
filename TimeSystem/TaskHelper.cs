@@ -33,29 +33,32 @@ namespace TimeSystem
         internal static void Sche()
         {
             sche.Clear();
-           var list =Schedules.Where(p => p.Enable == 1).ToList();
+           var list =Schedules.ToList();
+           
+
             list.ForEach(i =>
             {
                 if (!Directory.Exists(i.realLogPath))
                 {
                     Directory.CreateDirectory(i.realLogPath);
                 }
+                if (i.Enable == 1)
+                {
+                    JobDataMap map = new JobDataMap();
+                    map.Add("Schedule", i);
+                    var uid = i.Uid.ToString();
+                    IJobDetail job = JobBuilder.Create<FullTask>()
+                    .UsingJobData(map)
+                    .WithIdentity(uid, uid)
+                    .Build();
 
-                JobDataMap map = new JobDataMap();
-                map.Add("Schedule", i);
-                var uid = i.Uid.ToString();
-                IJobDetail job = JobBuilder.Create<FullTask>()
-                .UsingJobData(map)
-                .WithIdentity(uid, uid)
-                .Build();
-
-                ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
-                .StartNow()
-                .WithIdentity("tri_" + uid, "tri_" + uid)
-                .WithCronSchedule(i.Cron)
-                .Build();
-                sche.ScheduleJob(job, tri);
-
+                    ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
+                    .StartNow()
+                    .WithIdentity("tri_" + uid, "tri_" + uid)
+                    .WithCronSchedule(i.Cron)
+                    .Build();
+                    sche.ScheduleJob(job, tri);
+                }
             });
         }
     }
