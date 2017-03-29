@@ -18,14 +18,18 @@ namespace TimeSystem
         /// <param name="context"></param>
         public void Execute(IJobExecutionContext context)
         {
-            var job = context.JobDetail.JobDataMap.Get("Schedule") as Schedule_t;
+          
             try
             {
+                var job = context.JobDetail.JobDataMap.Get("Schedule") as Schedule_t;
+                LogHelper.WriteLog(job, "开始执行");
+
                 ExeJob(job);
+                LogHelper.WriteLog(job,"执行成功");
             }
             catch (Exception ex)
             {
-                LogHelper.WriteLog(job,ex.ToString());
+                LogHelper.WriteLog(ex.ToString());
             }
         }
         /// <summary>
@@ -58,7 +62,7 @@ namespace TimeSystem
             {
                 proc = new Process();
                 proc.StartInfo.FileName = "cmd.exe";
-                proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(proc.StartInfo.FileName);
+                proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(job.application.Path);
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.RedirectStandardInput = true;
                 proc.StartInfo.UseShellExecute = false;

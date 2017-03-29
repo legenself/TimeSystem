@@ -33,48 +33,45 @@ namespace TimeSystem
         internal static void Sche()
         {
             sche.Clear();
-           var list =Schedules.Where(p => p.Enable == 1).ToList();
+            var list = Schedules.ToList();
+
+
             list.ForEach(i =>
             {
                 if (!Directory.Exists(i.realLogPath))
                 {
                     Directory.CreateDirectory(i.realLogPath);
                 }
-
-                JobDataMap map = new JobDataMap();
-                map.Add("Schedule", i);
-                var uid = i.Uid.ToString();
-                IJobDetail job = JobBuilder.Create<FullTask>()
-                .UsingJobData(map)
-                .WithIdentity(uid, uid)
-                .Build();
-
-
-
-                //ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
-                //.StartNow()
-                //.WithIdentity("tri_" + uid, "tri_" + uid)
-                //.WithCronSchedule(i.Cron)
-                //.Build();
-
-                if (i.Repeat == 0)
+                if (i.Enable == 1)
                 {
-
-                    sche.ScheduleJob(job, TriggerBuilder.Create().StartNow().WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
-                }
-                else {
-                    ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
-                    .StartNow()
-                    .WithIdentity("tri_" + uid, "tri_" + uid)
-                    .WithCronSchedule(i.Cron)
+                    JobDataMap map = new JobDataMap();
+                    map.Add("Schedule", i);
+                    var uid = i.Uid.ToString();
+                    IJobDetail job = JobBuilder.Create<FullTask>()
+                    .UsingJobData(map)
+                    .WithIdentity(uid, uid)
                     .Build();
-                    sche.ScheduleJob(job,tri);
+
+
+                    if (i.Repeat == 0)
+                    {
+
+                        sche.ScheduleJob(job, TriggerBuilder.Create().StartNow().WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
+                    }
+                    else
+                    {
+                        ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
+                        .StartNow()
+                        .WithIdentity("tri_" + uid, "tri_" + uid)
+                        .WithCronSchedule(i.Cron)
+                        .Build();
+                        sche.ScheduleJob(job, tri);
+
+                    }
+
+
 
                 }
-
-
-
-
             });
         }
     }
