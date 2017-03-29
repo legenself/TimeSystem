@@ -30,7 +30,7 @@ namespace TimeSystem
             return Json<dynamic>(jobs);
         }
         [HttpGet]
-        public string[] logfile(int id,string filename) {
+        public IHttpActionResult logfile(int id,string filename) {
             var job = TaskHelper.Schedules.First(p => p.Id == id);
             lock (job)
             {
@@ -42,7 +42,7 @@ namespace TimeSystem
                     logs.Add(line);
                 }
                 sr.Close();
-                return logs.ToArray();
+                return Json(logs)  ;
             }
          
         }

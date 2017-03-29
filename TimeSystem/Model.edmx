@@ -40,6 +40,8 @@
           <Property Name="LogPattern" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="LogPath" Type="varchar" MaxLength="800" Nullable="false" />
           <Property Name="Memo" Type="varchar(max)" />
+          <Property Name="Repeat" Type="int" Nullable="false" />
+          <Property Name="Delay" Type="int" />
         </EntityType>
         <EntityContainer Name="TaskModelStoreContainer">
           <EntitySet Name="Application_t" EntityType="Self.Application_t" Schema="dbo" store:Type="Tables" />
@@ -90,6 +92,8 @@
           <Property Name="LogPattern" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="LogPath" Type="String" Nullable="false" MaxLength="800" FixedLength="false" Unicode="false" />
           <Property Name="Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Repeat" Type="Int32" Nullable="false" />
+          <Property Name="Delay" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -123,6 +127,8 @@
           <EntitySetMapping Name="Schedule_t">
             <EntityTypeMapping TypeName="TaskModel.Schedule_t">
               <MappingFragment StoreEntitySet="Schedule_t">
+                <ScalarProperty Name="Delay" ColumnName="Delay" />
+                <ScalarProperty Name="Repeat" ColumnName="Repeat" />
                 <ScalarProperty Name="Memo" ColumnName="Memo" />
                 <ScalarProperty Name="LogPath" ColumnName="LogPath" />
                 <ScalarProperty Name="LogPattern" ColumnName="LogPattern" />

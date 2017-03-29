@@ -49,12 +49,31 @@ namespace TimeSystem
                 .WithIdentity(uid, uid)
                 .Build();
 
-                ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
-                .StartNow()
-                .WithIdentity("tri_" + uid, "tri_" + uid)
-                .WithCronSchedule(i.Cron)
-                .Build();
-                sche.ScheduleJob(job, tri);
+
+
+                //ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
+                //.StartNow()
+                //.WithIdentity("tri_" + uid, "tri_" + uid)
+                //.WithCronSchedule(i.Cron)
+                //.Build();
+
+                if (i.Repeat == 0)
+                {
+
+                    sche.ScheduleJob(job, TriggerBuilder.Create().StartNow().WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
+                }
+                else {
+                    ICronTrigger tri = (ICronTrigger)TriggerBuilder.Create()
+                    .StartNow()
+                    .WithIdentity("tri_" + uid, "tri_" + uid)
+                    .WithCronSchedule(i.Cron)
+                    .Build();
+                    sche.ScheduleJob(job,tri);
+
+                }
+
+
+
 
             });
         }

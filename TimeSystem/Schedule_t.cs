@@ -24,5 +24,7 @@ namespace TimeSystem
         public string LogPattern { get; set; }
         public string LogPath { get; set; }
         public string Memo { get; set; }
+        public int Repeat { get; set; }
+        public Nullable<int> Delay { get; set; }
     }
 }
