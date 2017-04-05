@@ -21,6 +21,15 @@ namespace TimeSystem
                 return path;
             }
         }
+
+        public string GetLastLogItem
+        {
+            get
+            {
+                var filename = logs.Last();
+                return GetLogItems(filename, (int)GetIndex(filename).Last());
+            }
+        }
         public List<long> GetIndex(string filename) {
             FileStream fs;
             //获得文件所在路径  
@@ -44,6 +53,14 @@ namespace TimeSystem
             }
             fs.Close();
             return index;
+        }
+        public string GetLogItems(string filename, int i)
+        {
+
+            List<long> index = GetIndex(filename);
+            FileStream fs = new FileStream(realLogPath + filename, FileMode.Open);
+            //获得文件所在路径  
+            return GetLogItem((int)index[i - 1], (int)index[i], fs);
         }
         public List<string> GetLogItems(string filename,int[] list ) {
            

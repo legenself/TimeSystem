@@ -21,7 +21,7 @@ namespace TimeSystem
             }
         }
 
-        static TaskHelper()
+        static TaskHelper()  
         {
             sche = new StdSchedulerFactory().GetScheduler();
             sche.Start();
