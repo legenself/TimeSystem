@@ -53,7 +53,7 @@ namespace TimeSystem
                     .Build();
 
 
-                    if (i.Repeat == 0)
+                    if (i.Repeat ==1)
                     {
 
                         sche.ScheduleJob(job, TriggerBuilder.Create().StartNow().WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
