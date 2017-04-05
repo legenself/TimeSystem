@@ -27,7 +27,8 @@ namespace TimeSystem
             get
             {
                 var filename = logs.Last();
-                return GetLogItems(filename, (int)GetIndex(filename).Last());
+
+                return GetLogItems(filename, (int)GetIndex(filename).Count-1);
             }
         }
         public List<long> GetIndex(string filename) {

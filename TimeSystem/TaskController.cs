@@ -26,7 +26,8 @@ namespace TimeSystem
                 Memo = p.Memo,
                 Cron = p.Cron,
                 Enable = p.Enable,
-                Logfile = p.logs
+                //Logfile = p.logs,
+                //lastlog=p.GetLastLogItem
             }).ToArray();
             return Json<dynamic>(jobs);
         }
