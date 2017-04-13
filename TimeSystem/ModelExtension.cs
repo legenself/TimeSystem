@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSRedis;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,9 +12,18 @@ namespace TimeSystem
         public Application_t application {
             get {
                 TaskEntities db = new TaskEntities();
-                return db.Application_t.FirstOrDefault(p=>p.Uid==this.ApplicationUid);
+                return db.Application_t.FirstOrDefault(p => p.Uid == this.ApplicationUid);
             }
-        }  
+        }
+
+        public Status status{
+            get {
+                using (RedisClient rc = new RedisClient("192.168.1.70"))
+                {
+                    return rc.HGetAll<Status>(Uid.ToString());
+                }
+            }
+        }
         public string realLogPath {
             get {
                 var path = this.LogPath + this.Id + "-" + this.Uid.ToString() + @"\";
@@ -21,7 +31,6 @@ namespace TimeSystem
                 return path;
             }
         }
-
         public string GetLastLogItem
         {
             get
@@ -89,6 +98,18 @@ namespace TimeSystem
             get {
                return Directory.GetFiles(realLogPath, "*.txt").Select(p=>Path.GetFileName(p)).ToArray();
             }
+        }
+
+        public class Status
+        {
+            public Status() {
+                type = 0;
+                update = DateTime.MinValue;
+                message = "未到获取应用执行信息";
+            }
+            public int type;//0 未获取到，1 在执行，2这次执行完等待下次执行，3异常
+            public DateTime update;
+            public string message;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace TimeSystem
     {
         public int Id { get; set; }
         public int Type { get; set; }
-        public Nullable<System.Guid> TaskUid { get; set; }
+        public Nullable<System.Guid> ScheduleUid { get; set; }
         public int Result { get; set; }
         public string Message { get; set; }
         public System.DateTime Time { get; set; }

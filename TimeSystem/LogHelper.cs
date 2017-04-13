@@ -22,7 +22,7 @@ namespace TimeSystem
                     Message = msg,
                     Result = 0,
                     Time = DateTime.Now,
-                    TaskUid = task.Uid,
+                    ScheduleUid = task.Uid,
                     Type = 0
                 });
                 db.SaveChanges();

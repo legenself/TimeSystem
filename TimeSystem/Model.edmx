@@ -21,7 +21,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="TaskUid" Type="uniqueidentifier" />
+          <Property Name="ScheduleUid" Type="uniqueidentifier" />
           <Property Name="Result" Type="int" Nullable="false" />
           <Property Name="Message" Type="varchar(max)" />
           <Property Name="Time" Type="datetime" Nullable="false" />
@@ -36,12 +36,12 @@
           <Property Name="ApplicationUid" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Paras" Type="varchar(max)" Nullable="false" />
           <Property Name="Enable" Type="int" Nullable="false" />
-          <Property Name="LogWhen" Type="int" Nullable="false" />
           <Property Name="LogPattern" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="LogPath" Type="varchar" MaxLength="800" Nullable="false" />
           <Property Name="Memo" Type="varchar(max)" />
           <Property Name="Repeat" Type="int" Nullable="false" />
           <Property Name="Delay" Type="int" />
+          <Property Name="LogWhen" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="TaskModelStoreContainer">
           <EntitySet Name="Application_t" EntityType="Self.Application_t" Schema="dbo" store:Type="Tables" />
@@ -73,7 +73,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="TaskUid" Type="Guid" />
+          <Property Name="ScheduleUid" Type="Guid" />
           <Property Name="Result" Type="Int32" Nullable="false" />
           <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
@@ -88,12 +88,12 @@
           <Property Name="ApplicationUid" Type="Guid" Nullable="false" />
           <Property Name="Paras" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Enable" Type="Int32" Nullable="false" />
-          <Property Name="LogWhen" Type="Int32" Nullable="false" />
           <Property Name="LogPattern" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="LogPath" Type="String" Nullable="false" MaxLength="800" FixedLength="false" Unicode="false" />
           <Property Name="Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Repeat" Type="Int32" Nullable="false" />
           <Property Name="Delay" Type="Int32" />
+          <Property Name="LogWhen" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -118,7 +118,7 @@
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
-                <ScalarProperty Name="TaskUid" ColumnName="TaskUid" />
+                <ScalarProperty Name="ScheduleUid" ColumnName="ScheduleUid" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -127,12 +127,12 @@
           <EntitySetMapping Name="Schedule_t">
             <EntityTypeMapping TypeName="TaskModel.Schedule_t">
               <MappingFragment StoreEntitySet="Schedule_t">
+                <ScalarProperty Name="LogWhen" ColumnName="LogWhen" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="Repeat" ColumnName="Repeat" />
                 <ScalarProperty Name="Memo" ColumnName="Memo" />
                 <ScalarProperty Name="LogPath" ColumnName="LogPath" />
                 <ScalarProperty Name="LogPattern" ColumnName="LogPattern" />
-                <ScalarProperty Name="LogWhen" ColumnName="LogWhen" />
                 <ScalarProperty Name="Enable" ColumnName="Enable" />
                 <ScalarProperty Name="Paras" ColumnName="Paras" />
                 <ScalarProperty Name="ApplicationUid" ColumnName="ApplicationUid" />

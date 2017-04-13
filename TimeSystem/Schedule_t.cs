@@ -20,11 +20,11 @@ namespace TimeSystem
         public System.Guid ApplicationUid { get; set; }
         public string Paras { get; set; }
         public int Enable { get; set; }
-        public int LogWhen { get; set; }
         public string LogPattern { get; set; }
         public string LogPath { get; set; }
         public string Memo { get; set; }
         public int Repeat { get; set; }
         public Nullable<int> Delay { get; set; }
+        public int LogWhen { get; set; }
     }
 }
