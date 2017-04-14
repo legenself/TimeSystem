@@ -16,11 +16,13 @@ namespace TimeSystem
             }
         }
 
-        public Status status{
+        public Dictionary<string,string> status{
             get {
                 using (RedisClient rc = new RedisClient("192.168.1.70"))
                 {
-                    return rc.HGetAll<Status>(Uid.ToString());
+                    string s = Uid.ToString().ToLower();
+ 
+                    return rc.HGetAll(s);
                 }
             }
         }
@@ -102,11 +104,11 @@ namespace TimeSystem
 
         public class Status
         {
-            public Status() {
-                type = 0;
-                update = DateTime.MinValue;
-                message = "未到获取应用执行信息";
-            }
+            //public Status() {
+            //    type = 0;
+            //    update = DateTime.MinValue;
+            //    message = "未到获取应用执行信息";
+            //}
             public int type;//0 未获取到，1 在执行，2这次执行完等待下次执行，3异常
             public DateTime update;
             public string message;
