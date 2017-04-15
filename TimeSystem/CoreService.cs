@@ -13,18 +13,12 @@ namespace TimeSystem
     public class CoreService
     {
         private static Hashtable ht = new Hashtable();
-        HttpSelfHostConfiguration config;
-        HttpSelfHostServer server;
         string srvName;
         string srvDesc;
         public CoreService(string srvName, string srvDesc)
         {
-            config = new HttpSelfHostConfiguration("http://localhost:3333");
-            config.Routes.MapHttpRoute("default", "api/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
-            server = new HttpSelfHostServer(config);
             this.srvName = srvName;
             this.srvDesc = srvDesc;
-
         }
         public void Start()
         {
@@ -32,7 +26,6 @@ namespace TimeSystem
             {
                 LogHelper.WriteLog(srvName + "将要启动了...");
                 //服务启动
-                server.OpenAsync().Wait();
                 LoadJob();
 
                 LogHelper.WriteLog(srvName + "启动成功!");
@@ -48,7 +41,6 @@ namespace TimeSystem
         /// </summary>
         public void Stop()
         {
-            server.CloseAsync().Wait();
             LogHelper.WriteLog(srvName + "停止了!");
             //服务停止
 
@@ -58,7 +50,6 @@ namespace TimeSystem
         /// </summary>
         public void Shutdown()
         {
-            server.CloseAsync().Wait();
             LogHelper.WriteLog(srvName + "关闭了!");
             //服务关闭
 
@@ -68,7 +59,6 @@ namespace TimeSystem
         /// </summary>
         public void Continue()
         {
-            server.OpenAsync().Wait();
             TaskHelper.Sche();
             LogHelper.WriteLog(srvName + "继续了!");
             //服务继续
@@ -79,7 +69,6 @@ namespace TimeSystem
         /// </summary>
         public void Pause()
         {
-            server.CloseAsync().Wait();
             LogHelper.WriteLog(srvName + "暂停了!");
             //服务暂停
 
