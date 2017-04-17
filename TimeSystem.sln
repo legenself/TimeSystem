@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSystem", "TimeSystem\Ti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSystemManageWeb", "TimeSystemManageWeb\TimeSystemManageWeb.csproj", "{FACCF5D2-FD25-48AE-AE1F-24EDFD2EE4CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{B77C2E8A-85F3-4CB6-8EF0-891B1A0995DB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{FACCF5D2-FD25-48AE-AE1F-24EDFD2EE4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FACCF5D2-FD25-48AE-AE1F-24EDFD2EE4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FACCF5D2-FD25-48AE-AE1F-24EDFD2EE4CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B77C2E8A-85F3-4CB6-8EF0-891B1A0995DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B77C2E8A-85F3-4CB6-8EF0-891B1A0995DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B77C2E8A-85F3-4CB6-8EF0-891B1A0995DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B77C2E8A-85F3-4CB6-8EF0-891B1A0995DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,18 +13,38 @@ namespace TimeSystem
     public class CoreService
     {
         private static Hashtable ht = new Hashtable();
+        RedisClient redis;
         string srvName;
         string srvDesc;
         public CoreService(string srvName, string srvDesc)
         {
+
             this.srvName = srvName;
             this.srvDesc = srvDesc;
+            redis = new RedisClient("192.168.1.70");
+            redis.Ping();
+            //redis.SubscriptionChanged += (s, e) =>
+            //{
+            //    Console.WriteLine("There are now {0} open channels", e.Response.Count);
+            //};
+            redis.SubscriptionReceived += (s, e) =>
+            {
+                switch (e.Message.Body.ToLower()) {
+                    case "refresh":
+                        TaskHelper.Sche();
+                        break;
+                }
+
+                //Console.WriteLine("Message received: {0}", e.Message.Body);
+            };
+
         }
         public void Start()
         {
             try
             {
                 LogHelper.WriteLog(srvName + "将要启动了...");
+
                 //服务启动
                 LoadJob();
 
@@ -43,7 +63,7 @@ namespace TimeSystem
         {
             LogHelper.WriteLog(srvName + "停止了!");
             //服务停止
-
+            StopJob();
         }
         /// <summary>
         /// 关闭服务时执行
@@ -52,14 +72,14 @@ namespace TimeSystem
         {
             LogHelper.WriteLog(srvName + "关闭了!");
             //服务关闭
-
+            StopJob();
         }
         /// <summary>
         /// 继续服务时
         /// </summary>
         public void Continue()
         {
-            TaskHelper.Sche();
+            LoadJob();
             LogHelper.WriteLog(srvName + "继续了!");
             //服务继续
 
@@ -71,11 +91,23 @@ namespace TimeSystem
         {
             LogHelper.WriteLog(srvName + "暂停了!");
             //服务暂停
-
+            StopJob();
         }
+
+        private void StopJob()
+        {
+            redis.PUnsubscribe("cmd");
+          
+        }
+
         private void LoadJob()
         {
+
+
             TaskHelper.Sche();
+            Task.Run(() => {
+                redis.PSubscribe("cmd");
+            });
         }
     }
 }
