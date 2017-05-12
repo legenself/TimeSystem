@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
@@ -14,24 +13,38 @@ namespace TimeSystem
     public class CoreService
     {
         private static Hashtable ht = new Hashtable();
-
+        RedisClient redis;
         string srvName;
         string srvDesc;
-        private CancellationTokenSource TokenSource = new CancellationTokenSource();
-        private Task CurrentTask;
         public CoreService(string srvName, string srvDesc)
         {
 
             this.srvName = srvName;
             this.srvDesc = srvDesc;
-          
-      
+            redis = new RedisClient("192.168.1.70");
+            redis.Ping();
+            //redis.SubscriptionChanged += (s, e) =>
+            //{
+            //    Console.WriteLine("There are now {0} open channels", e.Response.Count);
+            //};
+            redis.SubscriptionReceived += (s, e) =>
+            {
+                switch (e.Message.Body.ToLower()) {
+                    case "refresh":
+                        TaskHelper.Sche();
+                        break;
+                }
+
+                //Console.WriteLine("Message received: {0}", e.Message.Body);
+            };
+
         }
         public void Start()
         {
             try
             {
- 
+                LogHelper.WriteLog(srvName + "将要启动了...");
+
                 //服务启动
                 LoadJob();
 
@@ -48,20 +61,18 @@ namespace TimeSystem
         /// </summary>
         public void Stop()
         {
+            LogHelper.WriteLog(srvName + "停止了!");
             //服务停止
             StopJob();
-            LogHelper.WriteLog(srvName + "停止了!");
-
         }
         /// <summary>
         /// 关闭服务时执行
         /// </summary>
         public void Shutdown()
         {
+            LogHelper.WriteLog(srvName + "关闭了!");
             //服务关闭
             StopJob();
-            LogHelper.WriteLog(srvName + "关闭了!");
-
         }
         /// <summary>
         /// 继续服务时
@@ -78,21 +89,15 @@ namespace TimeSystem
         /// </summary>
         public void Pause()
         {
+            LogHelper.WriteLog(srvName + "暂停了!");
             //服务暂停
             StopJob();
-            LogHelper.WriteLog(srvName + "暂停了!");
-
         }
 
         private void StopJob()
         {
-            if (CurrentTask != null)
-            {
-                if (CurrentTask.Status == TaskStatus.Running) { }
-                {
-                    TokenSource.Cancel();
-                 }
-            }
+            redis.PUnsubscribe("cmd");
+          
         }
 
         private void LoadJob()
@@ -100,30 +105,9 @@ namespace TimeSystem
 
 
             TaskHelper.Sche();
-            CancellationToken token = TokenSource.Token;
-            CurrentTask = new Task(() =>
-            {
-                RedisClient redis;
-                redis = new RedisClient("192.168.1.70");
-                redis.Ping();
-                //redis.SubscriptionChanged += (s, e) =>
-                //{
-                //    Console.WriteLine("There are now {0} open channels", e.Response.Count);
-                //};
-                redis.SubscriptionReceived += (s, e) =>
-                {
-                    switch (e.Message.Body.ToLower())
-                    {
-                        case "refresh":
-                            TaskHelper.Sche();
-                            break;
-                    }
-
-                    //Console.WriteLine("Message received: {0}", e.Message.Body);
-                };
+            Task.Run(() => {
                 redis.PSubscribe("cmd");
-            },token);
-            CurrentTask.Start();
+            });
         }
     }
 }
