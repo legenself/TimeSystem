@@ -24,18 +24,9 @@ namespace TimeSystemManageWeb.Controllers
                 p =>
                 {
                     p.App = db.Application_t.First(p1 => p1.Uid == p.ApplicationUid);
-                    var status = rc.HGetAll(p.Uid.ToString());
-                    if (status!=null&& status.Count!=0) {
-                        status["update"] = DateTime.Parse(status["update"]).ToString("yyyy-MM-dd HH:mm:ss");
-                        var st = DateTime.Parse(status["startTime"]);
-                        status["startTime"] = st.ToString("yyyy-MM-dd HH:mm:ss");
-                        var ts = (int)decimal.Parse(status["history"]);
-                        status.Add("predict",DateTime.Parse(status["startTime"]).AddSeconds(ts).ToString("yyyy-MM-dd HH:mm:ss"));
-                    }
-                    p.Status = status;
+                    p.Status = rc.HGetAll(p.Uid.ToString());
                 }
                 );
-            
             JsonResult result = new JsonResult();
             result.Data = schedules;
 
