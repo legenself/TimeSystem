@@ -64,6 +64,7 @@ namespace TimeSystem
             proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(job.application.Path);
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.RedirectStandardInput = true;
+            proc.StartInfo.RedirectStandardError = true;
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.CreateNoWindow = true;
             proc.Start();
@@ -76,12 +77,15 @@ namespace TimeSystem
             //sb.Append(DateTime.Now.ToString(job.LogPattern));
             //sb.Append(".txt");
             //sb.ToString();
+            string appcmd = "";
 
-             string appcmd = job.application.Path + " " + job.Paras + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern)+".txt";
+            //string str = string.Format(@"""{0}"" {1} {2}", cmdExe, appcmd, "&exit");
+
+            //myPro.StandardInput.WriteLine(str);
 
             //var ar = sb.ToString().ToArray();
             proc.StandardInput.WriteLine(appcmd);
-            proc.StandardInput.WriteLine("exit");
+            //proc.StandardInput.WriteLine("exit");
             proc.WaitForExit();
             proc.Close();
         }
