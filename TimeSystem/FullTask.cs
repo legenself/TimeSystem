@@ -78,7 +78,16 @@ namespace TimeSystem
             //sb.Append(".txt");
             //sb.ToString();
             string appcmd = "";
+            if (Path.GetFileName(job.application.Path).Split('.')[1] == "py")
+            {
+                //appcmd = "python " + job.application.Path + " " + job.Paras + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt";
+                appcmd = string.Format(@"""python"" {0} {1}", job.application.Path + " " + job.Paras + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt", "&exit"); 
+            }
+            else {
+                 appcmd = job.application.Path + " " + job.Paras + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt";
+                appcmd = string.Format(@"{0} {1} {2}", job.application.Path ,job.Paras + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt", "&exit");
 
+            }
             //string str = string.Format(@"""{0}"" {1} {2}", cmdExe, appcmd, "&exit");
 
             //myPro.StandardInput.WriteLine(str);
