@@ -38,27 +38,18 @@ namespace TimeSystem
         /// <param name="job"></param>
         public void ExeJob(Schedule_t job)
         {
-
+            
             Process proc = null;
-
             proc = new Process();
-            proc.StartInfo.FileName = "cmd.exe";
+            proc.StartInfo.FileName = "helprun.exe";
             proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(job.application.Path);
+            proc.StartInfo.Arguments = job.ApplicationUid+" "+job.application.Path+" "+job.Paras;
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.RedirectStandardInput = true;
             proc.StartInfo.RedirectStandardError = true;
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.CreateNoWindow = true;
             proc.Start();
-
-            string appcmd = "";
-
-            appcmd = job.application.Path + " " + job.Paras + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt";
-            appcmd = string.Format(@"{0} {1} {2}", job.application.Path, job.Paras + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt", "&exit");
-
-            //myPro.StandardInput.WriteLine(str);
-            proc.StandardInput.WriteLine(appcmd);
-            //proc.StandardInput.WriteLine("exit");
             proc.WaitForExit();
             proc.Close();
         }

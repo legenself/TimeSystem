@@ -23,63 +23,64 @@ namespace HelpRun
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            rc = new RedisClient(ConfigurationManager.AppSettings.Get("redishost"));
+
+            rc =   new RedisClient(ConfigurationManager.AppSettings.Get("redishost"));
             rc.Connect(1000);
-            if (ConfigurationManager.AppSettings.Get("password") != "")
+            try
             {
+                if (ConfigurationManager.AppSettings.Get("password") != "")
+                {
 
-                rc.Auth(ConfigurationManager.AppSettings.Get("password"));
+                    rc.Auth(ConfigurationManager.AppSettings.Get("password"));
 
+                }
+                if (Boolean.Parse(ConfigurationManager.AppSettings.Get("debug")))
+                {
+                    rc.LPush("debug", args);
+                }
+
+                ApplicationUid = args[0];
+                filepath = args[1];
+                runargs = args[2];
+                //logpath = args[3];
+                //logpattern = args[4];
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                rc.HSet("status_" + ApplicationUid, "startTime", DateTime.Now);
+                rc.HIncrBy("status_" + ApplicationUid, "condition", 1);
+                rc.HSet("status_" + ApplicationUid, "updateTime", DateTime.Now);
+
+
+                Process proc = new Process();
+                proc.StartInfo.FileName = "cmd.exe";
+                proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(filepath);
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.RedirectStandardError = true;
+                proc.StartInfo.RedirectStandardInput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.CreateNoWindow = true;
+                proc.OutputDataReceived += Proc_OutputDataReceived;
+                proc.ErrorDataReceived += Proc_ErrorDataReceived;
+                proc.Start();
+                proc.BeginErrorReadLine();
+                proc.BeginOutputReadLine();
+                string cmdpattern = GenerateCmd(filepath);
+                //string appcmd = job.application.Path + " " + args[1] + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt";
+                //string appcmd = string.Format(cmdpattern, filepath, runargs) + "  >> " + logpath + DateTime.Now.ToString(logpattern) + ".txt"; 
+                string appcmd = string.Format(cmdpattern, filepath, runargs);
+                proc.StandardInput.WriteLine(appcmd);
+                proc.StandardInput.WriteLine("exit");
+                proc.WaitForExit();
+                proc.Close();
+                proc.Dispose();
+                stopwatch.Stop();
+                rc.HIncrBy("status_" + ApplicationUid, "condition", -1);
+                sethistory(stopwatch.Elapsed.TotalSeconds);
             }
-            if (Boolean.Parse(ConfigurationManager.AppSettings.Get("debug"))) {
-                rc.LPush("debug", args);
+            catch (Exception ex) {
+                rc.LPush("exption_helprun", ex.Message.ToString());
             }
-            ApplicationUid = args[0];
-            filepath = args[1];
-            runargs = args[2];
-            //logpath = args[3];
-            //logpattern = args[4];
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            rc.HSet("status_" + ApplicationUid, "startTime", DateTime.Now);
-            rc.HIncrBy("status_" + ApplicationUid, "condition", 1);
-            rc.HSet("status_" + ApplicationUid, "updateTime", DateTime.Now);
-
-
-            Process proc = new Process();
-            proc.StartInfo.FileName = "cmd.exe";
-            proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(filepath);
-            proc.StartInfo.RedirectStandardOutput = true;
-            proc.StartInfo.RedirectStandardError = true;
-            proc.StartInfo.RedirectStandardInput = true;
-            proc.StartInfo.UseShellExecute = false;
-            proc.StartInfo.CreateNoWindow = true;
-            proc.OutputDataReceived += Proc_OutputDataReceived;
-            proc.ErrorDataReceived += Proc_ErrorDataReceived;
-            proc.Start();
-            proc.BeginErrorReadLine();
-            proc.BeginOutputReadLine();
-            string cmdpattern = GenerateCmd(filepath);
-            //string appcmd = job.application.Path + " " + args[1] + " >> " + job.realLogPath + DateTime.Now.ToString(job.LogPattern) + ".txt";
-            //string appcmd = string.Format(cmdpattern, filepath, runargs) + "  >> " + logpath + DateTime.Now.ToString(logpattern) + ".txt"; 
-            string appcmd = string.Format(cmdpattern, filepath, runargs);
-
-
-            proc.StandardInput.WriteLine(appcmd);
-
-
-            proc.StandardInput.WriteLine("exit");
-            proc.WaitForExit();
-            proc.Close();
-            proc.Dispose();
-            stopwatch.Stop();
-
-
-
-            rc.HIncrBy("status_" + ApplicationUid, "condition", -1);
-
-            sethistory(stopwatch.Elapsed.TotalSeconds);
         }
 
         private static void Proc_ErrorDataReceived(object sender, DataReceivedEventArgs e)
@@ -88,9 +89,7 @@ namespace HelpRun
                 return;
             }
             var now = DateTime.Now;
-
             rc.HSet("status_" + ApplicationUid, "updateTime", now);
-
             rc.LPush("error_" + ApplicationUid, now + ":" + e.Data);
         }
 
@@ -98,7 +97,6 @@ namespace HelpRun
         {
             rc.HSetNx("status_" + ApplicationUid, "history", runtime);
             rc.HSet("status_" + ApplicationUid, "updateTime", DateTime.Now);
-
             var s = double.Parse(rc.HGet("status_" + ApplicationUid, "history"));
             rc.HSet("status_" + ApplicationUid, "history", (runtime + s) / 2.0);
         }
