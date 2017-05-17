@@ -23,7 +23,6 @@ namespace TimeSystem
                     s.WhenStopped(tc => tc.Stop());               //5
                 });
                 x.RunAsLocalSystem();                            //6
-
                 x.SetDescription("TimeSystem" + startInfo);        //7
                 x.SetDisplayName("TimeSystem");                       //8
                 x.SetServiceName("TimeSystem");                       //9

@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<div ng-app="task" ng-controller="panel" class="row">
+<div ng-app="task"  ng-controller="panel" class="row">
     <div class="">
         <table class="table">
             <thead>
@@ -18,63 +18,43 @@
             <tbody>
                 <tr ng-repeat="item in schedules">
                     <td>
-                        <span ng-class="{1:'label label-primary',2:'label label-success',3:'label label-danger'}[item.Status.type]">{{item.App.Name}}</span>
-                        @*<span class="label label-default" ng-hide=" " >{{item.App.Name}}</span>*@
+                    <span ng-class="{1:'label label-primary',2:'label label-success',3:'label label-danger'}[item.Status.type]">{{item.App.Name}}</span>
+                        <span class="label label-default"  >{{item.App.Name}}</span>
 
                         <br />
                         <small>{{item.App.Description}}</small>
-                        <small>{{item.Memo}}</small>
+                        {{item.Memo}}
                         <br />
                         <small>{{item.Paras}}</small>
-                        <br />
-                        <small>{{item.Cron}}</small>
+                        <br /><small>{{item.Cron}}</small>
                     </td>
 
 
-                    <td>
+                    <td >
                         {{item.Status.message}}
                         <br />
-                        <small>{{item.Status.startTime }}</small>
-                        <span class="label label-info" >{{item.Status.predict  }}</span>
+                        <small>{{item.Status.update}}</small>
+       
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
-
+ 
 
 @section scripts{
-    <script src="~/Scripts/sco.countdown.js"></script>
     <script>
         var app = angular.module('task', []);
-        app.controller('panel', function ($scope, $http, $interval) {
+        app.controller('panel', function ($scope, $http) {
             $scope.update = function () {
                 $http.post("/home/Status").then(function (result) {
                     console.log(result);
                     $scope.schedules = result.data;
-                    timePromise = undefined;
-
-                    timePromise = $interval(function () {
-                        //遍历history
-                        for (var item in $scope.schedules) {
-                            if ($scope.schedules[item].Status != null) {
-                                if ($scope.schedules[item].Status.history > 1) {
-                                    $scope.schedules[item].Status.history--;
-                                } else {
-                                    $scope.schedules[item].Status.history=0;
-
-                                }
-                            }
-                        }
-                        //大于1则减一
-                        //小于1则显示0
-
-                    }, 1000, 100);  
                 });
             }
             $scope.update();
-
+          
         });
-    </script>
+    </script>    
 }

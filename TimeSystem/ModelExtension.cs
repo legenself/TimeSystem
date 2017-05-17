@@ -9,12 +9,7 @@ using System.Threading.Tasks;
 namespace TimeSystem
 {
     public partial class Schedule_t {
-        public Application_t application {
-            get {
-                TaskEntities db = new TaskEntities();
-                return db.Application_t.FirstOrDefault(p => p.Uid == this.ApplicationUid);
-            }
-        }
+        public Application_t application;
 
         public Dictionary<string,string> status{
             get {
@@ -30,9 +25,9 @@ namespace TimeSystem
         {
             get
             {
-                var path = this.LogPath + this.Id + "-" + this.Uid.ToString() + @"\";
+               
 
-                return path;
+                return LogPath + Id + "-" + Uid.ToString() + @"\";
             }
         }
     }

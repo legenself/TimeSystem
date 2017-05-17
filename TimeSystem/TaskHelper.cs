@@ -17,11 +17,16 @@ namespace TimeSystem
             get
             {
                 TaskEntities db = new TaskEntities();
-                return db.Schedule_t.ToList();
+                var list = db.Schedule_t.ToList();
+                list.ForEach(i =>
+                {
+                    i.application = db.Application_t.FirstOrDefault(p => p.Uid == i.ApplicationUid);
+                });
+                return list;
             }
         }
 
-        static TaskHelper()  
+        static TaskHelper()
         {
             sche = new StdSchedulerFactory().GetScheduler();
             sche.Start();
@@ -53,7 +58,7 @@ namespace TimeSystem
                     .Build();
 
 
-                    if (i.Repeat ==1)
+                    if (i.Repeat == 0)
                     {
 
                         sche.ScheduleJob(job, TriggerBuilder.Create().StartNow().WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
