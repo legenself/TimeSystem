@@ -72,7 +72,7 @@ namespace HelpRun
                 proc.Close();
                 proc.Dispose();
                 stopwatch.Stop();
-                rc.HIncrBy("status_" + runUid, "condition", -1);
+                rc.HIncrBy("status_" + runUid, "runcount", -1);
                 sethistory(stopwatch.Elapsed.TotalSeconds);
             }
             catch (Exception ex)
