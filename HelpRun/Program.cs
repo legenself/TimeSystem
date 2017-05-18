@@ -77,7 +77,7 @@ namespace HelpRun
             }
             catch (Exception ex)
             {
-                rc.LPush("error_helprun", ex.Message.ToString());
+                rc.LPush("error_sys", ex.Message.ToString());
             }
         }
 
