@@ -43,7 +43,7 @@ namespace TimeSystem
             proc = new Process();
             proc.StartInfo.FileName = "helprun.exe";
             proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(job.application.Path);
-            proc.StartInfo.Arguments = job.ApplicationUid+" "+job.application.Path+" "+job.Paras;
+            proc.StartInfo.Arguments = job.Uid+" "+job.application.Path+" "+job.Paras;
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.RedirectStandardInput = true;
             proc.StartInfo.RedirectStandardError = true;

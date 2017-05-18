@@ -14,7 +14,14 @@ namespace TimeSystemManageWeb.Controllers
 
             return View();
         }
+        public JsonResult Notification() {
+            RedisClient rc = new RedisClient("192.168.1.70");
+            JsonResult result = new JsonResult();
 
+            rc.Keys("status*");
+
+            return result;
+        }
         public JsonResult Status()
         {
             TaskEntities db = new TaskEntities();

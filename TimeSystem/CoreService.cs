@@ -2,6 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,21 +20,19 @@ namespace TimeSystem
 
         string srvName;
         string srvDesc;
-        private CancellationTokenSource TokenSource = new CancellationTokenSource();
-        private Task CurrentTask;
+
         public CoreService(string srvName, string srvDesc)
         {
 
             this.srvName = srvName;
             this.srvDesc = srvDesc;
-          
-      
-        }
+            
+         }
         public void Start()
         {
             try
             {
- 
+
                 //服务启动
                 LoadJob();
 
@@ -86,44 +87,19 @@ namespace TimeSystem
 
         private void StopJob()
         {
-            if (CurrentTask != null)
-            {
-                if (CurrentTask.Status == TaskStatus.Running) { }
-                {
-                    TokenSource.Cancel();
-                 }
-            }
+            SqlListener.Stop();
+
         }
 
         private void LoadJob()
         {
-
-
+            SqlListener.Start();
             TaskHelper.Sche();
-            CancellationToken token = TokenSource.Token;
-            CurrentTask = new Task(() =>
-            {
-                RedisClient redis;
-                redis = new RedisClient("192.168.1.70");
-                redis.Ping();
-                //redis.SubscriptionChanged += (s, e) =>
-                //{
-                //    Console.WriteLine("There are now {0} open channels", e.Response.Count);
-                //};
-                redis.SubscriptionReceived += (s, e) =>
-                {
-                    switch (e.Message.Body.ToLower())
-                    {
-                        case "refresh":
-                            TaskHelper.Sche();
-                            break;
-                    }
-
-                    //Console.WriteLine("Message received: {0}", e.Message.Body);
-                };
-                redis.PSubscribe("cmd");
-            },token);
-            CurrentTask.Start();
         }
+ 
+ 
+
+
+ 
     }
 }
