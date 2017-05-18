@@ -13,6 +13,8 @@ namespace HelpRun
     public class Program
     {
         static string runUid, filepath, runargs;
+        static bool IsDebug = false;
+        static string debugprefix = "";
         /// <summary>
         /// ID
         /// 想要运行的文件全路径
@@ -28,16 +30,21 @@ namespace HelpRun
            
             try
             {
+
                 rc.Connect(1000);
+
+                  IsDebug = Boolean.Parse(ConfigurationManager.AppSettings.Get("debug"));
+
                 if (ConfigurationManager.AppSettings.Get("password") != "")
                 {
 
                     rc.Auth(ConfigurationManager.AppSettings.Get("password"));
 
                 }
-                if (Boolean.Parse(ConfigurationManager.AppSettings.Get("debug")))
+                if (IsDebug)
                 {
                     rc.LPush("debug", args);
+                    debugprefix = "debug_";
                 }
 
                 runUid = args[0];
@@ -46,11 +53,11 @@ namespace HelpRun
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                rc.HSet("status_" + runUid, "startTime", DateTime.Now);
-                rc.HIncrBy("status_" + runUid, "errorcount", 1);
-                rc.HIncrBy("status_" + runUid, "runcount", 1);
+                rc.HSet(debugprefix+"status_" + runUid, "startTime", DateTime.Now);
+                rc.HIncrBy(debugprefix + "status_" + runUid, "errorcount", 1);
+                rc.HIncrBy(debugprefix + "status_" + runUid, "runcount", 1);
 
-                rc.HSet("status_" + runUid, "updateTime", DateTime.Now);
+                rc.HSet(debugprefix + "status_" + runUid, "updateTime", DateTime.Now);
 
 
                 Process proc = new Process();
@@ -66,19 +73,23 @@ namespace HelpRun
                 proc.Start();
                 proc.BeginErrorReadLine();
                 proc.BeginOutputReadLine();
+
+            
                 string appcmd = string.Format(GenerateCmd(filepath), filepath, runargs);
+                rc.LPush("debug", appcmd);
                 proc.StandardInput.WriteLine(appcmd);
                 proc.StandardInput.WriteLine("exit");
                 proc.WaitForExit();
                 proc.Close();
                 proc.Dispose();
                 stopwatch.Stop();
-                rc.HIncrBy("status_" + runUid, "errorcount", -1);
+      
+                rc.HIncrBy(debugprefix + "status_" + runUid, "errorcount", -1);
                 sethistory(stopwatch.Elapsed.TotalSeconds);
             }
             catch (Exception ex)
             {
-                rc.LPush("error_sys", ex.Message.ToString());
+                rc.LPush(debugprefix + "error_sys", ex.Message.ToString());
             }
         }
 
@@ -89,16 +100,16 @@ namespace HelpRun
                 return;
             }
             var now = DateTime.Now;
-            rc.HSet("status_" + runUid, "updateTime", now);
-            rc.LPush("error_" + runUid, now + "|" + e.Data);
+            rc.HSet(debugprefix + "status_" + runUid, "updateTime", now);
+            rc.LPush(debugprefix + "error_" + runUid, now + "|" + e.Data);
         }
 
         static void sethistory(double runtime)
         {
-            rc.HSetNx("status_" + runUid, "history", runtime);
-            rc.HSet("status_" + runUid, "updateTime", DateTime.Now);
+            rc.HSetNx(debugprefix + "status_" + runUid, "history", runtime);
+            rc.HSet(debugprefix + "status_" + runUid, "updateTime", DateTime.Now);
             var s = double.Parse(rc.HGet("status_" + runUid, "history"));
-            rc.HSet("status_" + runUid, "history", (runtime + s) / 2.0);
+            rc.HSet(debugprefix + "status_" + runUid, "history", (runtime + s) / 2.0);
         }
         static RedisClient rc;
         private static void Proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
@@ -111,19 +122,18 @@ namespace HelpRun
             var now = DateTime.Now;
             switch (data[0])
             {
-                case "message":
-                    rc.HSet("status_" + runUid, "updateTime", now);
-                    rc.LPush("message_" + runUid, now + "|" + data[1]);
-                    break;
+
                 case "status":
-                    rc.HSet("status_" + runUid, "updateTime", now);
-                    rc.HSet("status_" + runUid, "status", data[1]);
+                    rc.HSet(debugprefix + "status_" + runUid, "updateTime", now);
+                    rc.HSet(debugprefix + "status_" + runUid, "status", data[1]);
                     break;
+                case "message":
                 default:
-                    rc.LPush("console_" + runUid, now + "|" + e.Data);
+                    rc.HSet(debugprefix + "status_" + runUid, "updateTime", now);
+                    rc.LPush(debugprefix + "console_" + runUid, now + "|" + e.Data);
                     break;
             }
-
+ 
 
         }
 
