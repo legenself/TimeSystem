@@ -25,9 +25,10 @@ namespace HelpRun
         {
 
             rc = new RedisClient(ConfigurationManager.AppSettings.Get("redishost"));
-            rc.Connect(1000);
+           
             try
             {
+                rc.Connect(1000);
                 if (ConfigurationManager.AppSettings.Get("password") != "")
                 {
 
@@ -72,7 +73,7 @@ namespace HelpRun
                 proc.Close();
                 proc.Dispose();
                 stopwatch.Stop();
-                rc.HIncrBy("status_" + runUid, "runcount", -1);
+                rc.HIncrBy("status_" + runUid, "errorcount", -1);
                 sethistory(stopwatch.Elapsed.TotalSeconds);
             }
             catch (Exception ex)
