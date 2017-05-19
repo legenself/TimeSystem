@@ -26,5 +26,6 @@ namespace TimeSystemManageWeb
         public int Repeat { get; set; }
         public Nullable<int> Delay { get; set; }
         public int LogWhen { get; set; }
+        public Dictionary<string, string> DebugStatus { get; internal set; }
     }
 }

@@ -80,8 +80,10 @@ namespace HelpRun
                 proc.StandardInput.WriteLine(appcmd);
                 proc.StandardInput.WriteLine("exit");
                 proc.WaitForExit();
+
                 //proc.Close();
                 //proc.Dispose();
+
                 stopwatch.Stop();
       
                 rc.HIncrBy(debugprefix + "status_" + runUid, "errorcount", -1);
@@ -120,20 +122,16 @@ namespace HelpRun
             }
             string[] data = e.Data.Split('|');
             var now = DateTime.Now;
+            rc.HSet(debugprefix + "status_" + runUid, "updateTime", now);
             switch (data[0])
             {
 
                 case "status":
-                    rc.HSet(debugprefix + "status_" + runUid, "updateTime", now);
                     rc.HSet(debugprefix + "status_" + runUid, "status", data[1]);
                     break;
-                case "message":
-                default:
-                    rc.HSet(debugprefix + "status_" + runUid, "updateTime", now);
-                    rc.LPush(debugprefix + "console_" + runUid, now + "|" + e.Data);
-                    break;
             }
- 
+          
+            rc.LPush(debugprefix + "console_" + runUid, now + "|" + e.Data);
 
         }
 
