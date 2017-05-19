@@ -80,8 +80,8 @@ namespace HelpRun
                 proc.StandardInput.WriteLine(appcmd);
                 proc.StandardInput.WriteLine("exit");
                 proc.WaitForExit();
-                proc.Close();
-                proc.Dispose();
+                //proc.Close();
+                //proc.Dispose();
                 stopwatch.Stop();
       
                 rc.HIncrBy(debugprefix + "status_" + runUid, "errorcount", -1);
@@ -89,7 +89,7 @@ namespace HelpRun
             }
             catch (Exception ex)
             {
-                rc.LPush(debugprefix + "error_sys", ex.Message.ToString());
+                rc.LPush(debugprefix + "error_"+ runUid, ex.ToString());
             }
         }
 
@@ -108,7 +108,7 @@ namespace HelpRun
         {
             rc.HSetNx(debugprefix + "status_" + runUid, "history", runtime);
             rc.HSet(debugprefix + "status_" + runUid, "updateTime", DateTime.Now);
-            var s = double.Parse(rc.HGet("status_" + runUid, "history"));
+            var s = double.Parse(rc.HGet(debugprefix + "status_" + runUid, "history"));
             rc.HSet(debugprefix + "status_" + runUid, "history", (runtime + s) / 2.0);
         }
         static RedisClient rc;

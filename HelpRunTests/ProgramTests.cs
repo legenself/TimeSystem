@@ -16,10 +16,8 @@ namespace HelpRun.Tests
         {
             string[] args = new string[] {
                 "id",
-                "C:/1-Application/DingDing/demo.py",
+                "D:/TimeSystemApp/pythonDemo/demo.py",
                 "1,2,3,4,5",
-                "d:/",
-                "yyyy-MM-dd",
             };
 
             HelpRun.Program.Main(args);
