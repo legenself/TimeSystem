@@ -104,7 +104,7 @@ namespace HelpRun
         {
             rc.HSetNx(debugprefix + "status_" + runUid, "history", runtime);
             rc.HSet(debugprefix + "status_" + runUid, "updateTime", DateTime.Now);
-            var s = double.Parse(rc.HGet("status_" + runUid, "history"));
+            var s = double.Parse(rc.HGet(debugprefix + "status_" + runUid, "history"));
             rc.HSet(debugprefix + "status_" + runUid, "history", (runtime + s) / 2.0);
         }
         static RedisClient rc;

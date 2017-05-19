@@ -11,10 +11,17 @@ namespace TimeSystemManageWeb.Controllers
     {
         public ActionResult Index()
         {
-
             return View();
         }
-        public JsonResult Notification() {
+        public JsonResult Service() {
+            JsonResult result = new JsonResult();
+
+            
+
+            return result;
+        }
+        public JsonResult Notification()
+        {
             RedisClient rc = new RedisClient("192.168.1.70");
             JsonResult result = new JsonResult();
 
@@ -31,7 +38,7 @@ namespace TimeSystemManageWeb.Controllers
                 p =>
                 {
                     p.App = db.Application_t.First(p1 => p1.Uid == p.ApplicationUid);
-                    p.Status = rc.HGetAll(p.Uid.ToString());
+                    p.Status = rc.HGetAll("status_"+p.Uid.ToString());
                 }
                 );
             JsonResult result = new JsonResult();
@@ -41,7 +48,7 @@ namespace TimeSystemManageWeb.Controllers
             return result;
         }
 
-        public JsonResult updateSchedule(Guid uid,string cron ,int enable,string paras)
+        public JsonResult updateSchedule(Guid uid, string cron, int enable, string paras)
         {
             JsonResult result = new JsonResult();
             try
@@ -53,17 +60,15 @@ namespace TimeSystemManageWeb.Controllers
                 old.Enable = enable;
                 old.Cron = cron;
                 db.SaveChanges();
-                RedisClient rc = new RedisClient("192.168.1.70");
-                rc.Publish("cmd", "refresh");
 
-
-                result.Data = new {status=1, msg = "成功修改并刷新" };
+                result.Data = new { status = 1, msg = "成功修改" };
             }
-            catch (Exception ex){
-                result.Data = new { status = 0, msg =ex.ToString()};
+            catch (Exception ex)
+            {
+                result.Data = new { status = 0, msg = ex.ToString() };
             }
             return result;
         }
-       
+
     }
 }
