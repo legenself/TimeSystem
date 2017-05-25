@@ -104,6 +104,8 @@ namespace HelpRun
             var now = DateTime.Now;
             rc.HSet(debugprefix + "status_" + runUid, "updateTime", now);
             rc.LPush(debugprefix + "error_" + runUid, now + "|" + e.Data);
+            rc.LPush(debugprefix + "console_" + runUid, now + "|" + e.Data);
+
         }
 
         static void sethistory(double runtime)
