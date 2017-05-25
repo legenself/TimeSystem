@@ -43,6 +43,7 @@
           <Property Name="Delay" Type="int" />
           <Property Name="LogWhen" Type="int" Nullable="false" />
           <Property Name="TimeOut" Type="int" />
+          <Property Name="StartAt" Type="datetime" />
         </EntityType>
         <EntityContainer Name="TaskModelStoreContainer">
           <EntitySet Name="Application_t" EntityType="Self.Application_t" Schema="dbo" store:Type="Tables" />
@@ -96,6 +97,7 @@
           <Property Name="Delay" Type="Int32" />
           <Property Name="LogWhen" Type="Int32" Nullable="false" />
           <Property Name="TimeOut" Type="Int32" />
+          <Property Name="StartAt" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -129,6 +131,7 @@
           <EntitySetMapping Name="Schedule_t">
             <EntityTypeMapping TypeName="TaskModel.Schedule_t">
               <MappingFragment StoreEntitySet="Schedule_t">
+                <ScalarProperty Name="StartAt" ColumnName="StartAt" />
                 <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
                 <ScalarProperty Name="LogWhen" ColumnName="LogWhen" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />

@@ -27,5 +27,6 @@ namespace TimeSystem
         public Nullable<int> Delay { get; set; }
         public int LogWhen { get; set; }
         public Nullable<int> TimeOut { get; set; }
+        public Nullable<System.DateTime> StartAt { get; set; }
     }
 }

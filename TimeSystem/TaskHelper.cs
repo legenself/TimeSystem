@@ -39,7 +39,7 @@ namespace TimeSystem
         {
             sche.Clear();
             var list = Schedules.ToList();
-
+          
 
             list.ForEach(i =>
             {
@@ -60,8 +60,10 @@ namespace TimeSystem
 
                     if (i.Repeat == 0)
                     {
-
-                        sche.ScheduleJob(job, TriggerBuilder.Create().StartNow().WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
+                        if(i.StartAt.HasValue)
+                        sche.ScheduleJob(job, TriggerBuilder.Create().StartAt(new DateTimeOffset(i.StartAt.Value)).WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
+                        //TriggerBuilder.Create().StartAt(DateTimeOffset.);
+                        
                     }
                     else
                     {
