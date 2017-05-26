@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpRun", "HelpRun\HelpRun.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpRunTests", "HelpRunTests\HelpRunTests.csproj", "{C1419432-2960-48DF-BD36-402A2A1BCACD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger", "Messenger\Messenger.csproj", "{19712309-EAE5-4947-9087-6C38901D2B63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C1419432-2960-48DF-BD36-402A2A1BCACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1419432-2960-48DF-BD36-402A2A1BCACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1419432-2960-48DF-BD36-402A2A1BCACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19712309-EAE5-4947-9087-6C38901D2B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19712309-EAE5-4947-9087-6C38901D2B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19712309-EAE5-4947-9087-6C38901D2B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19712309-EAE5-4947-9087-6C38901D2B63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
