@@ -61,7 +61,7 @@ namespace TimeSystem
                     if (i.Repeat == 0)
                     {
                         if(i.StartAt.HasValue)
-                        sche.ScheduleJob(job, TriggerBuilder.Create().StartAt(new DateTimeOffset(i.StartAt.Value)).WithIdentity("tri_" + uid, "tri_" + uid).WithSimpleSchedule(x => x.WithIntervalInSeconds(i.Delay.Value)).Build());
+                        sche.ScheduleJob(job, TriggerBuilder.Create().StartAt(new DateTimeOffset(i.StartAt.Value)).WithIdentity("tri_" + uid, "tri_" + uid).Build());
                         //TriggerBuilder.Create().StartAt(DateTimeOffset.);
                         
                     }
