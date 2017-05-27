@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpRunTests", "HelpRunTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger", "Messenger\Messenger.csproj", "{19712309-EAE5-4947-9087-6C38901D2B63}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Taskmaster", "Taskmaster\Taskmaster.njsproj", "{D17B9DCF-4960-40FF-9959-639F42136B6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{19712309-EAE5-4947-9087-6C38901D2B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19712309-EAE5-4947-9087-6C38901D2B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19712309-EAE5-4947-9087-6C38901D2B63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D17B9DCF-4960-40FF-9959-639F42136B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D17B9DCF-4960-40FF-9959-639F42136B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D17B9DCF-4960-40FF-9959-639F42136B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D17B9DCF-4960-40FF-9959-639F42136B6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

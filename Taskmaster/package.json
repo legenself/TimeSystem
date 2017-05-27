@@ -1,0 +1,14 @@
+{
+  "name": "taskmaster",
+  "version": "0.0.0",
+  "description": "Taskmaster",
+  "main": "app.js",
+  "dependencies": {
+    "async": "^2.4.1",
+    "node-cmd": "^3.0.0",
+    "redis": "^2.7.1"
+  },
+  "author": {
+    "name": "legen"
+  }
+}
