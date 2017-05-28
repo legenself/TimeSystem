@@ -8,9 +8,9 @@ var pattern = /[rR]ule.js$/;
 for (var i in files) {
     var r = files[i].match(pattern);
     if (r !== null) {
-        var a = files[i].replace(pattern, "");
+        //var a = files[i].replace(pattern, "");
 
-        rules[a]=require('./rules/' + files[i]).rule;
+        rules.push(require('./rules/' + files[i]).rule);
     }
 }
 

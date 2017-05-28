@@ -1,11 +1,16 @@
 ﻿var cmd = require('node-cmd');
 
  
-exports.rule = function (callback) {
+
+
+rule = new Promise(function (resolve, reject) {
     cmd.get(
         'ping www.baidu.com',
         function (err, data, stderr) {
-            callback(false)
+
+
+            resolve({ type: false, msg: "内存警告" + data });
         }
     );
-}
+})
+exports.rule = rule;
