@@ -35,6 +35,9 @@
     <Compile Include="Rules\cpurule.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Rules\errorpercentrule.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Rules\simplerule.js">
       <SubType>Code</SubType>
     </Compile>
