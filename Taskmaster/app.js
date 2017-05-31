@@ -31,7 +31,7 @@ Promise.all(rules).then(values => {
     var client = redis.createClient(RDS_PORT, RDS_HOST);
 
     var list = linq.from(values)
-        .where(p => p.type == true)
+        .where(p => p.type === true)
         .select(p =>
             new Promise((resolve, reject) => {
                 client.rpush("message", admin + "," + p.msg, function (err) {
