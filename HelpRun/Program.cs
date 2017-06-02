@@ -63,6 +63,7 @@ namespace HelpRun
                 Process proc = new Process();
                 proc.StartInfo.FileName = "cmd.exe";
                 proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(filepath);
+                proc.StartInfo.Domain = Path.GetDirectoryName(filepath);
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.RedirectStandardInput = true;

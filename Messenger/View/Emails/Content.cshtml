@@ -1,0 +1,12 @@
+﻿ @using Messenger
+<p>@ViewBag.Name</p>
+<a href="">查看详情</a>
+<hr />
+<ul>
+    @foreach (var i in ViewBag.Content as List<Message>)
+    {
+        <li><b>@i.rule</b>  @i.describe  </li>
+    }
+</ul>
+
+
